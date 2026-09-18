@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fundamentos previos a Estructuras de Datos</title>
+<style>
+:root{
+  --bg:#0b1020; --panel:#121a2d; --panel2:#18223a; --text:#eef3ff;
+  --muted:#aebbd6; --accent:#66d9ef; --accent2:#a78bfa; --ok:#55d187;
+  --bad:#ff7181; --line:#2b3958; --white:#fff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(135deg,#0b1020,#10182b 55%,#0c1425);
+font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);line-height:1.55}
+header{padding:42px 7vw 30px;border-bottom:1px solid var(--line);background:radial-gradient(circle at 85% 10%,#263a6b 0,transparent 35%)}
+header h1{font-size:clamp(2rem,5vw,4rem);margin:0 0 10px;line-height:1.05}
+header p{max-width:900px;color:var(--muted);font-size:1.1rem}
+.badge{display:inline-block;padding:7px 12px;border:1px solid #3c527d;border-radius:999px;color:var(--accent);font-weight:700;margin-bottom:15px}
+nav{position:sticky;top:0;z-index:10;background:#0b1020ee;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.navin{display:flex;gap:8px;overflow:auto;padding:10px 6vw}
+nav a{white-space:nowrap;text-decoration:none;color:var(--muted);padding:8px 11px;border-radius:9px}
+nav a:hover{background:var(--panel2);color:var(--white)}
+main{max-width:1200px;margin:auto;padding:30px 6vw 80px}
+section{margin:45px 0}
+h2{font-size:2rem;margin-bottom:8px}
+h3{color:var(--accent);margin-top:25px}
+.lead{color:var(--muted);max-width:900px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.card{background:linear-gradient(145deg,var(--panel),#10172a);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 10px 30px #0003}
+.card strong{color:var(--accent)}
+pre{background:#080c16;border:1px solid #27324a;border-radius:12px;padding:16px;overflow:auto;color:#eaf0ff}
+code{font-family:Consolas,Monaco,monospace}
+.callout{border-left:4px solid var(--accent);background:#132039;padding:16px 18px;border-radius:0 12px 12px 0;margin:18px 0}
+.diagram{font-family:Consolas,monospace;background:#080c16;border:1px solid var(--line);padding:20px;border-radius:12px;overflow:auto;color:#dbe8ff}
+button{border:0;border-radius:10px;padding:10px 15px;background:var(--accent2);color:white;font-weight:700;cursor:pointer}
+button:hover{filter:brightness(1.12)}
+input,select{background:#0a1020;border:1px solid #3a4a6c;color:white;border-radius:9px;padding:10px;width:100%;margin:6px 0 12px}
+.feedback{margin-top:10px;font-weight:700;min-height:25px}
+.ok{color:var(--ok)} .bad{color:var(--bad)}
+.question{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+.option{display:block;background:#111a2d;border:1px solid #293753;padding:10px;margin:8px 0;border-radius:9px;cursor:pointer}
+.option:hover{border-color:var(--accent)}
+.score{font-size:1.3rem;font-weight:800;margin-top:15px}
+.progress{height:10px;background:#1d2942;border-radius:99px;overflow:hidden;margin:12px 0 25px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.4s}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin:10px 0}
+summary{cursor:pointer;font-weight:700}
+table{width:100%;border-collapse:collapse;background:var(--panel);border-radius:12px;overflow:hidden}
+th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--accent)}
+.tag{display:inline-block;padding:3px 8px;border-radius:7px;background:#253455;color:#dce7ff;font-size:.82rem;margin:2px}
+footer{text-align:center;color:var(--muted);border-top:1px solid var(--line);padding:30px}
+@media(max-width:700px){main{padding-left:4vw;padding-right:4vw}.navin{padding-left:3vw;padding-right:3vw}}
+
+.lang-toggle{display:flex;gap:8px;margin:12px 0 8px;flex-wrap:wrap}
+.lang-btn{background:#253455;border:1px solid #3b4d72;color:#dfe8fa;padding:8px 14px;border-radius:9px}
+.lang-btn.active{background:var(--accent);color:#07111e;border-color:var(--accent)}
+.lang-btn:hover{filter:brightness(1.12)}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="badge">Java · Fundamentos de programación</span>
+  <h1>Fundamentos previos a Estructuras de Datos</h1>
+  <p>Conceptos y ejercicios para comprender cómo se almacenan, organizan, recorren, modifican y relacionan los datos antes de trabajar con listas, pilas, colas y otras estructuras.</p>
+</header>
+
+<nav><div class="navin">
+<a href="#mapa">Mapa</a><a href="#programacion">Programación</a><a href="#metodos">Métodos</a>
+<a href="#arreglos">Arreglos</a><a href="#poo">POO</a><a href="#referencias">Referencias</a>
+<a href="#algoritmos">Algoritmos</a><a href="#complejidad">Complejidad</a><a href="#tad">TAD</a>
+<a href="#reto">Reto</a><a href="#quiz">Quiz</a>
+</div></nav>
+
+<main>
+
+<section id="mapa">
+<h2>Mapa conceptual</h2>
+<p class="lead">La comprensión de estructuras de datos se construye sobre varias ideas relacionadas. Cada bloque permite interpretar el siguiente.</p>
+<div class="grid">
+<div class="card"><strong>Datos</strong><br>Variables, tipos, valores y operadores.</div>
+<div class="card"><strong>Control</strong><br>Condiciones, ciclos y decisiones.</div>
+<div class="card"><strong>Procesamiento</strong><br>Métodos, parámetros y valores de retorno.</div>
+<div class="card"><strong>Arreglos</strong><br>Conjunto de elementos accesibles mediante índices.</div>
+<div class="card"><strong>Objetos</strong><br>Atributos, métodos, constructores y clases.</div>
+<div class="card"><strong>Referencias</strong><br>Relación entre una variable y un objeto creado en memoria.</div>
+<div class="card"><strong>Algoritmos</strong><br>Secuencias de pasos para resolver problemas.</div>
+<div class="card"><strong>Complejidad</strong><br>Relación entre el tamaño de los datos y el costo de una operación.</div>
+<div class="card"><strong>TAD</strong><br>Define qué operaciones ofrece una estructura sin imponer su implementación interna.</div>
+</div>
+</section>
+
+<section id="programacion">
+<h2>1. Fundamentos de programación</h2>
+<p class="lead">Un programa manipula datos mediante instrucciones. Para trabajar con estructuras es necesario interpretar con precisión qué representa cada variable y qué hace cada operación.</p>
+<div class="grid">
+<div class="card"><h3>Variables</h3><p>Una variable tiene un tipo, un nombre y un valor.</p>
+<pre class="code-java"><code>int edad = 20;
+double nota = 4.5;
+String nombre = "Laura";
+boolean aprobado = true;</code></pre>
+<pre class="code-python" style="display:none"><code>edad = 20
+nota = 4.5
+nombre = "Laura"
+aprobado = True</code></pre></div>
+<div class="card"><h3>Operadores</h3>
+<pre><code>int suma = 8 + 3;
+boolean mayor = 10 > 5;
+boolean valido = edad >= 18 && aprobado;</code></pre></div>
+<div class="card"><h3>Condiciones</h3>
+<pre><code>if (nota >= 3.0) {
+    System.out.println("Aprobado");
+} else {
+    System.out.println("No aprobado");
+}</code></pre></div>
+<div class="card"><h3>Repetición</h3>
+<pre><code>int i = 0;
+while (i < 5) {
+    System.out.println(i);
+    i++;
+}</code></pre></div>
+</div>
+
+<div class="question">
+<h3>Actividad interactiva: ¿qué imprime?</h3>
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('java')">☕ Java</button>
+  <button class="lang-btn" onclick="setLang('python')">🐍 Python</button>
+</div>
+<pre class="code-java"><code>int x = 5;
+int y = 2;
+
+if (x > y) {
+    System.out.println(x + y);
+} else {
+    System.out.println(x - y);
+}</code></pre>
+<pre class="code-python" style="display:none"><code>x = 5
+y = 2
+
+if x > y:
+    print(x + y)
+else:
+    print(x - y)</code></pre>
+<select id="q1"><option value="">Selecciona</option><option value="3">3</option><option value="7">7</option><option value="10">10</option></select>
+<button onclick="check('q1','7','f1')">Comprobar</button><div id="f1" class="feedback"></div>
+</div>
+</section>
+
+<section id="metodos">
+<h2>2. Métodos, parámetros y retorno</h2>
+<p class="lead">Las estructuras de datos se implementan mediante operaciones. Por eso es fundamental comprender cómo un método recibe información, procesa datos y devuelve un resultado.</p>
+<pre><code>static int mayor(int a, int b) {
+    if (a > b) {
+        return a;
+    }
+    return b;
+}
+
+public static void main(String[] args) {
+    int resultado = mayor(8, 13);
+    System.out.println(resultado);
+}</code></pre>
+<div class="grid">
+<div class="card"><strong>Parámetro</strong><br>Dato que recibe el método.</div>
+<div class="card"><strong>Retorno</strong><br>Resultado que entrega mediante <code>return</code>.</div>
+<div class="card"><strong>void</strong><br>Indica que el método no devuelve un valor.</div>
+<div class="card"><strong>Encapsulación</strong><br>Permite concentrar una operación en un método reutilizable.</div>
+</div>
+<details><summary>Ejercicio</summary>
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('java')">☕ Java</button>
+  <button class="lang-btn" onclick="setLang('python')">🐍 Python</button>
+</div>
+<p>Escribe un método <code>esPar(int numero)</code> que devuelva <code>true</code> si el número es par y <code>false</code> en caso contrario.</p>
+<pre class="code-java"><code>static boolean esPar(int numero) {
+    return numero % 2 == 0;
+}</code></pre>
+<pre class="code-python" style="display:none"><code>def es_par(numero):
+    return numero % 2 == 0</code></pre>
+</details>
+</section>
+
+<section id="arreglos">
+<h2>3. Arreglos</h2>
+<p class="lead">El arreglo es una referencia fundamental para comprender por qué existen otras formas de organizar datos.</p>
+<pre><code>int[] numeros = {10, 20, 30, 40, 50};
+
+System.out.println(numeros[0]); // 10
+System.out.println(numeros[3]); // 40</code></pre>
+<div class="diagram">Índice:     0      1      2      3      4
+            ↓      ↓      ↓      ↓      ↓
+Datos:     [10]   [20]   [30]   [40]   [50]</div>
+
+<div class="grid">
+<div class="card"><strong>Índice</strong><p>La posición comienza en 0.</p></div>
+<div class="card"><strong>length</strong><p>Indica la cantidad de posiciones.</p></div>
+<div class="card"><strong>Recorrido</strong><p>Permite procesar todos los elementos.</p></div>
+<div class="card"><strong>Capacidad</strong><p>Un arreglo creado con un tamaño determinado mantiene esa cantidad de posiciones.</p></div>
+</div>
+
+<pre><code>int suma = 0;
+
+for (int i = 0; i < numeros.length; i++) {
+    suma += numeros[i];
+}
+
+System.out.println(suma);</code></pre>
+
+<div class="question">
+<h3>Actividad: arreglo</h3>
+<p>¿Cuál es el valor de <code>numeros[2]</code>?</p>
+<select id="q2"><option value="">Selecciona</option><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option></select>
+<button onclick="check('q2','30','f2')">Comprobar</button><div id="f2" class="feedback"></div>
+</div>
+
+<h3>Operaciones frecuentes sobre arreglos</h3>
+<table>
+<tr><th>Operación</th><th>Idea</th><th>Ejemplo</th></tr>
+<tr><td>Recorrer</td><td>Visitar cada posición</td><td><code>for</code></td></tr>
+<tr><td>Buscar</td><td>Comparar cada elemento con un valor</td><td><code>if (numeros[i] == buscado)</code></td></tr>
+<tr><td>Contar</td><td>Incrementar un contador cuando se cumple una condición</td><td><code>contador++</code></td></tr>
+<tr><td>Acumular</td><td>Construir una suma o resultado progresivo</td><td><code>suma += numeros[i]</code></td></tr>
+<tr><td>Encontrar máximo</td><td>Comparar elementos con un valor de referencia</td><td><code>if (numeros[i] > mayor)</code></td></tr>
+</table>
+</section>
+
+<section id="poo">
+<h2>4. Programación Orientada a Objetos</h2>
+<p class="lead">Las listas enlazadas utilizan objetos llamados nodos. Por eso es necesario interpretar una clase, sus atributos, sus métodos y la creación de objetos.</p>
+
+<pre><code>class Estudiante {
+    String nombre;
+    double nota;
+
+    Estudiante(String nombre, double nota) {
+        this.nombre = nombre;
+        this.nota = nota;
+    }
+
+    void mostrar() {
+        System.out.println(nombre + " - " + nota);
+    }
+}
+
+Estudiante e1 = new Estudiante("Ana", 4.5);
+e1.mostrar();</code></pre>
+
+<div class="grid">
+<div class="card"><strong>Clase</strong><p>Define la estructura y comportamiento de un tipo de objeto.</p></div>
+<div class="card"><strong>Objeto</strong><p>Instancia concreta creada a partir de una clase.</p></div>
+<div class="card"><strong>Atributo</strong><p>Representa información que pertenece al objeto.</p></div>
+<div class="card"><strong>Método</strong><p>Representa una operación que puede realizar el objeto.</p></div>
+<div class="card"><strong>Constructor</strong><p>Se utiliza para inicializar un objeto al crearlo.</p></div>
+<div class="card"><strong>this</strong><p>Hace referencia al objeto actual.</p></div>
+</div>
+</section>
+
+<section id="referencias">
+<h2>5. Objetos, referencias, <code>new</code> y <code>null</code></h2>
+<p class="lead">Este concepto es central para comprender cómo se conectan los nodos de una lista enlazada.</p>
+
+<pre><code>Estudiante e1 = new Estudiante("Ana", 4.5);</code></pre>
+
+<div class="diagram">
+variable e1 ───────────────► objeto Estudiante
+                             nombre = "Ana"
+                             nota = 4.5
+</div>
+
+<p>La variable <code>e1</code> mantiene una referencia al objeto creado con <code>new</code>. En Java, los objetos se crean dinámicamente y se almacenan en el heap.</p>
+
+<h3>Referencia a otro objeto</h3>
+<pre><code>class Persona {
+    String nombre;
+    Persona siguiente;
+}</code></pre>
+
+<div class="diagram">
+p1 ──► [ nombre = "Ana" | siguiente ] ──► [ nombre = "Luis" | siguiente ] ──► null
+</div>
+
+<div class="callout"><strong>null</strong> significa que una referencia no está apuntando a un objeto. En una lista enlazada, <code>null</code> permite representar, por ejemplo, que no existe un siguiente nodo.</div>
+
+<div class="question">
+<h3>Actividad: referencias</h3>
+<p>Si se ejecuta <code>Persona p = null;</code>, ¿qué representa <code>p</code>?</p>
+<select id="q3"><option value="">Selecciona</option><option value="objeto">Un objeto Persona ya creado</option><option value="null">Una referencia que no apunta a un objeto</option><option value="texto">Un texto vacío</option></select>
+<button onclick="check('q3','null','f3')">Comprobar</button><div id="f3" class="feedback"></div>
+</div>
+</section>
+
+<section id="algoritmos">
+<h2>6. Algoritmos: recorrer, buscar y modificar</h2>
+<p class="lead">Una estructura de datos adquiere utilidad cuando existen operaciones para trabajar con la información que contiene.</p>
+
+<h3>Búsqueda lineal</h3>
+<pre><code>int buscado = 30;
+boolean encontrado = false;
+
+for (int i = 0; i < numeros.length; i++) {
+    if (numeros[i] == buscado) {
+        encontrado = true;
+        break;
+    }
+}
+
+System.out.println(encontrado);</code></pre>
+
+<h3>Máximo</h3>
+<pre><code>int mayor = numeros[0];
+
+for (int i = 1; i < numeros.length; i++) {
+    if (numeros[i] > mayor) {
+        mayor = numeros[i];
+    }
+}</code></pre>
+
+<h3>Eliminar conceptualmente un elemento</h3>
+<p>En un arreglo, eliminar no significa simplemente hacer que una posición desaparezca. Puede ser necesario desplazar elementos o utilizar otra estrategia. Esta limitación ayuda a comprender por qué existen estructuras con diferentes formas de almacenamiento.</p>
+
+<div class="question">
+<h3>Actividad: búsqueda</h3>
+<p>Para buscar un valor recorriendo un arreglo desde la primera posición, ¿qué mecanismo permite visitar las posiciones sucesivamente?</p>
+<select id="q4"><option value="">Selecciona</option><option value="if">Solo un if</option><option value="for">Un ciclo for</option><option value="class">Una clase</option></select>
+<button onclick="check('q4','for','f4')">Comprobar</button><div id="f4" class="feedback"></div>
+</div>
+</section>
+
+<section id="complejidad">
+<h2>7. Complejidad algorítmica</h2>
+<p class="lead">La complejidad permite expresar cómo cambia el costo de una operación cuando aumenta la cantidad de datos.</p>
+
+<div class="grid">
+<div class="card"><strong>O(1)</strong><p>El número de operaciones no depende directamente del tamaño de la entrada.</p>
+<pre><code>System.out.println(numeros[3]);</code></pre></div>
+<div class="card"><strong>O(n)</strong><p>El trabajo crece proporcionalmente con la cantidad de elementos.</p>
+<pre><code>for (int i=0; i&lt;n; i++) {
+    System.out.println(i);
+}</code></pre></div>
+<div class="card"><strong>O(n²)</strong><p>Un recorrido dentro de otro recorrido produce un crecimiento cuadrático típico.</p>
+<pre><code>for (int i=0; i&lt;n; i++)
+    for (int j=0; j&lt;n; j++)
+        System.out.println(i+j);</code></pre></div>
+</div>
+
+<table>
+<tr><th>Situación</th><th>Complejidad típica</th></tr>
+<tr><td>Acceso directo a una posición de arreglo</td><td>O(1)</td></tr>
+<tr><td>Recorrer todos los elementos</td><td>O(n)</td></tr>
+<tr><td>Buscar linealmente un valor</td><td>O(n)</td></tr>
+<tr><td>Dos recorridos anidados</td><td>O(n²)</td></tr>
+</table>
+</section>
+
+<section id="tad">
+<h2>8. Tipo Abstracto de Datos (TAD)</h2>
+<p class="lead">Un TAD define <strong>qué operaciones ofrece</strong> una estructura, sin especificar <strong>cómo están implementadas internamente</strong>.</p>
+
+<div class="diagram">
+              TAD: PILA
+        ┌────────────────────┐
+        │ apilar(x)          │
+        │ desapilar()        │
+        │ ver_tope()         │
+        └────────────────────┘
+                 │
+          ┌──────┴──────┐
+          ▼             ▼
+      arreglo       lista enlazada
+</div>
+
+<p>Una pila presenta comportamiento <strong>LIFO</strong>: el último elemento que entra es el primero que sale. Su implementación puede utilizar un arreglo o una lista enlazada. La interfaz puede mantenerse aunque cambie la implementación interna.</p>
+
+<div class="grid">
+<div class="card"><strong>Interfaz</strong><p>Operaciones que puede utilizar quien trabaja con el TAD.</p></div>
+<div class="card"><strong>Implementación</strong><p>Forma concreta en que esas operaciones se construyen.</p></div>
+<div class="card"><strong>Abstracción</strong><p>Permite trabajar con el comportamiento sin depender de los detalles internos.</p></div>
+</div>
+</section>
+
+<section id="puente">
+<h2>9. De los arreglos a las listas enlazadas</h2>
+<p class="lead">Una lista enlazada utiliza nodos conectados mediante referencias. Su tamaño puede crecer o disminuir creando o eliminando nodos durante la ejecución.</p>
+
+<pre><code>class Nodo {
+    int dato;
+    Nodo siguiente;
+
+    Nodo(int dato) {
+        this.dato = dato;
+        this.siguiente = null;
+    }
+}</code></pre>
+
+<div class="diagram">
+cabeza
+  │
+  ▼
+[10 | •] ──► [20 | •] ──► [30 | null]
+</div>
+
+<table>
+<tr><th>Concepto</th><th>Arreglo</th><th>Lista enlazada</th></tr>
+<tr><td>Acceso por índice</td><td>Directo</td><td>Se recorren referencias</td></tr>
+<tr><td>Tamaño</td><td>Fijado al crear el arreglo</td><td>Puede crecer o disminuir</td></tr>
+<tr><td>Organización</td><td>Posiciones consecutivas</td><td>Nodos conectados mediante referencias</td></tr>
+<tr><td>Elemento básico</td><td>Dato</td><td>Dato + referencia</td></tr>
+</table>
+
+<h3>Operaciones fundamentales</h3>
+<div class="grid">
+<div class="card"><strong>Insertar al inicio — O(1)</strong><pre><code>Nodo nuevo = new Nodo(valor);
+nuevo.siguiente = cabeza;
+cabeza = nuevo;</code></pre></div>
+<div class="card"><strong>Recorrer — O(n)</strong><pre><code>Nodo actual = cabeza;
+while (actual != null) {
+    System.out.println(actual.dato);
+    actual = actual.siguiente;
+}</code></pre></div>
+<div class="card"><strong>Insertar al final — O(n)</strong><p>Se recorre la lista hasta encontrar el último nodo.</p></div>
+<div class="card"><strong>Eliminar un valor — O(n)</strong><p>Se localiza el nodo y se modifican las referencias necesarias.</p></div>
+</div>
+</section>
+
+<section id="reto">
+<h2>10. Reto integrador</h2>
+<p class="lead">Construye mentalmente la solución antes de escribirla. El problema combina variables, arreglos, ciclos, métodos y objetos.</p>
+<div class="card">
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('java')">☕ Java</button>
+  <button class="lang-btn" onclick="setLang('python')">🐍 Python</button>
+</div>
+<h3>Problema</h3>
+<p>Crear un programa que almacene cinco números en un arreglo y tenga métodos para:</p>
+<ul>
+<li>mostrar todos los números;</li>
+<li>calcular la suma;</li>
+<li>encontrar el mayor;</li>
+<li>buscar un número y devolver <code>true</code> o <code>false</code>.</li>
+</ul>
+<h3>Solución de referencia</h3>
+<pre class="code-java"><code>public class Principal {
+
+    static void mostrar(int[] numeros) {
+        for (int i = 0; i &lt; numeros.length; i++) {
+            System.out.println(numeros[i]);
+        }
+    }
+
+    static int suma(int[] numeros) {
+        int total = 0;
+
+        for (int i = 0; i &lt; numeros.length; i++) {
+            total += numeros[i];
+        }
+
+        return total;
+    }
+
+    static int mayor(int[] numeros) {
+        int mayor = numeros[0];
+
+        for (int i = 1; i &lt; numeros.length; i++) {
+            if (numeros[i] &gt; mayor) {
+                mayor = numeros[i];
+            }
+        }
+
+        return mayor;
+    }
+
+    static boolean buscar(int[] numeros, int valor) {
+        for (int i = 0; i &lt; numeros.length; i++) {
+            if (numeros[i] == valor) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+
+        int[] numeros = {10, 20, 30, 40, 50};
+
+        mostrar(numeros);
+
+        System.out.println("Suma: " + suma(numeros));
+        System.out.println("Mayor: " + mayor(numeros));
+        System.out.println("¿Existe 30?: " + buscar(numeros, 30));
+    }
+}</code></pre>
+<pre class="code-python" style="display:none"><code>def mostrar(numeros):
+    for numero in numeros:
+        print(numero)
+
+def suma(numeros):
+    total = 0
+
+    for numero in numeros:
+        total += numero
+
+    return total
+
+def mayor(numeros):
+    mayor_valor = numeros[0]
+
+    for numero in numeros[1:]:
+        if numero &gt; mayor_valor:
+            mayor_valor = numero
+
+    return mayor_valor
+
+def buscar(numeros, valor):
+    for numero in numeros:
+        if numero == valor:
+            return True
+
+    return False
+
+numeros = [10, 20, 30, 40, 50]
+
+mostrar(numeros)
+
+print("Suma:", suma(numeros))
+print("Mayor:", mayor(numeros))
+print("¿Existe 30?:", buscar(numeros, 30))</code></pre>
+</div>
+</section>
+
+<section id="quiz">
+<h2>11. Verificación de conceptos</h2>
+<p class="lead">Selecciona una respuesta en cada pregunta.</p>
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<div id="quizbox"></div>
+<button onclick="gradeQuiz()">Calificar</button>
+<div id="result" class="score"></div>
+</section>
+
+</main>
+
+<footer>
+Fundamentos de programación · Java · Estructuras de Datos
+</footer>
+
+<script>
+function check(id, correct, feedbackId){
+  const value=document.getElementById(id).value;
+  const f=document.getElementById(feedbackId);
+  if(value===correct){
+    f.textContent="✓ Correcto";
+    f.className="feedback ok";
+  }else{
+    f.textContent="✗ Revisa el concepto y vuelve a intentarlo.";
+    f.className="feedback bad";
+  }
+}
+
+const questions=[
+ {q:"¿Qué posición ocupa el primer elemento de un arreglo en Java?",o:["0","1","-1","length"],a:0},
+ {q:"¿Qué palabra se utiliza para crear un objeto en Java?",o:["class","new","this","void"],a:1},
+ {q:"¿Qué representa null en una referencia?",o:["Cero","Un objeto vacío","Ausencia de referencia a un objeto","Un arreglo"],a:2},
+ {q:"¿Qué complejidad tiene normalmente recorrer todos los elementos de un arreglo una vez?",o:["O(1)","O(n)","O(n²)","O(log n)"],a:1},
+ {q:"¿Qué contiene un nodo básico de una lista enlazada simple?",o:["Solo un dato","Un dato y una referencia al siguiente nodo","Solo un índice","Dos arreglos obligatoriamente"],a:1},
+ {q:"¿Qué define principalmente un TAD?",o:["El lenguaje de programación","Qué operaciones ofrece y su comportamiento","La marca del computador","La cantidad exacta de memoria"],a:1},
+ {q:"¿Qué palabra permite referirse al objeto actual dentro de una clase?",o:["super","this","self","current"],a:1},
+ {q:"¿Qué ocurre con actual = actual.siguiente en una lista enlazada?",o:["Se mueve a la siguiente referencia","Borra el nodo actual","Reinicia la lista","Cambia el dato a cero"],a:0}
+];
+
+const box=document.getElementById("quizbox");
+questions.forEach((x,i)=>{
+  const d=document.createElement("div");
+  d.className="question";
+  d.innerHTML=`<h3>${i+1}. ${x.q}</h3>`+
+    x.o.map((op,j)=>`<label class="option"><input type="radio" name="qq${i}" value="${j}"> ${op}</label>`).join("");
+  box.appendChild(d);
+});
+
+function gradeQuiz(){
+ let score=0, answered=0;
+ questions.forEach((x,i)=>{
+   const selected=document.querySelector(`input[name="qq${i}"]:checked`);
+   if(selected){answered++; if(Number(selected.value)===x.a)score++;}
+ });
+ const pct=Math.round(score/questions.length*100);
+ document.getElementById("result").innerHTML=
+ `Resultado: ${score}/${questions.length} · ${pct}% · ${answered} preguntas respondidas`;
+ document.getElementById("bar").style.width=pct+"%";
+}
+
+function setLang(lang){
+  document.querySelectorAll('.code-java').forEach(el=>{
+    el.style.display = lang === 'java' ? 'block' : 'none';
+  });
+  document.querySelectorAll('.code-python').forEach(el=>{
+    el.style.display = lang === 'python' ? 'block' : 'none';
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.classList.toggle('active',
+      (lang === 'java' && btn.textContent.includes('Java')) ||
+      (lang === 'python' && btn.textContent.includes('Python'))
+    );
+  });
+}
+</script>
+</body>
+</html>
